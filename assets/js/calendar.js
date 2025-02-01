@@ -21,12 +21,10 @@ document.addEventListener('DOMContentLoaded', function () {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'timeGridWeek'
     },
 
     buttonText: {
       today: 'Heute', 
-      week: 'Woche', 
     },
 
     eventSources: [
