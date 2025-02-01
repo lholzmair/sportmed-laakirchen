@@ -8,6 +8,10 @@ app = Flask(__name__)
 CORS(app)
 DATABASE = 'database.db'
 
+@app.route('/assets/<path:filename>')
+def custom_static(filename):
+    return send_from_directory('assets', filename)
+
 @app.route('/')
 def index():
     return send_from_directory('.', 'index.html')
