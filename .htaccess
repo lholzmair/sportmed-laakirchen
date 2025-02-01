@@ -1,0 +1,11 @@
+<Files "urlaub.html">
+    AuthType Basic
+    AuthName "Geschützte Seite"
+    AuthUserFile "C:/Users/lholz/Desktop/XAMPP/htdocs/sportmed-laakirchen/forms/.htpasswd"
+    AuthBasicProvider file
+    AuthBasicAuthoritative On
+    Require valid-user    
+</Files>
+
+Header always set Cache-Control "no-store, no-cache, must-revalidate, private"
+Header always set Pragma "no-cache"

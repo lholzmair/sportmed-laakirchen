@@ -1,0 +1,189 @@
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Sportmed Laakirchen</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+
+  <!-- Calendar -->
+  <script src="../assets/js/calendar.js"></script>
+
+  <!-- Main CSS File -->
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+</head>
+
+<body class="starter-page-page">
+
+  <header id="header" class="header sticky-top">
+
+    <div class="branding d-flex align-items-center">
+
+      <div class="container position-relative d-flex align-items-center justify-content-between">
+        <a href="../index.html" class="logo d-flex align-items-center me-auto">
+          <img src="../assets/img/logo_trans.png" alt="sportmed-laakirchen"> 
+          <h1 class="sitename">Sportmed Laakirchen</h1>
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <section id="event-form-section" class="section light-background">
+    <div class="container">
+      <h2>Sonderzeiten verwalten</h2>
+      <form id="eventForm">
+        <label for="title">Titel:</label>
+        <input type="text" id="title" required>
+      
+        <label for="reason">Grund:</label>
+        <select id="reason" name="reason" required>
+          <option value="Urlaub">Urlaub</option>
+          <option value="Fortbildung">Fortbildung</option>
+          <option value="Feiertag">Feiertag</option>
+        </select>
+      
+        <label for="start">Startdatum:</label>
+        <input type="date" id="start" required>
+      
+        <label for="end">Enddatum:</label>
+        <input type="date" id="end" required>
+      
+        <button type="submit" id="addEventBtn">Hinzufügen</button>
+        <button type="button" id="deleteEventBtn">Löschen</button>
+                
+      </form>
+      <div id="form-message" style="margin-top: 10px;">
+        <ul></ul>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="event-list-section" class="section">
+
+    <div id="eventList" style="margin-top: 20px;">
+      <h3>Existierende Sonderzeiten:</h3>
+      <ul></ul>
+    </div>
+
+  </section>
+
+  
+
+  <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('eventForm'); // Hier wird das Formular referenziert
+  const eventList = document.querySelector('#eventList ul');
+
+  // Funktion zum Laden der Events
+  function loadEvents() {
+    fetch('http://127.0.0.1:5000/api/get-events')
+      .then(response => response.json())
+      .then(events => {
+        eventList.innerHTML = ''; // Liste leeren
+        events.forEach(event => {
+          const li = document.createElement('li');
+
+          // Formatierung des Datums ohne Uhrzeit
+          const startDate = new Date(event.start).toLocaleDateString('de-DE');
+          const endDate = new Date(event.end).toLocaleDateString('de-DE');
+
+          li.textContent = `${event.title} (${event.reason}) - ${startDate} - ${endDate}`;
+          li.dataset.id = event.id;
+          li.dataset.title = event.title;
+          li.dataset.reason = event.reason;
+          li.dataset.start = event.start.split('T')[0]; // Nur Datum
+          li.dataset.end = event.end.split('T')[0];     // Nur Datum
+
+          // Event ins Formular laden
+          li.addEventListener('click', function () {
+            document.getElementById('title').value = li.dataset.title;
+            document.getElementById('reason').value = li.dataset.reason;
+            document.getElementById('start').value = li.dataset.start;
+            document.getElementById('end').value = li.dataset.end;
+          });
+
+          eventList.appendChild(li);
+        });
+      })
+      .catch(err => console.error('Fehler beim Laden der Events:', err));
+  }
+
+  // Events initial laden
+  loadEvents();
+
+  // Event hinzufügen
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const title = document.getElementById('title').value;
+    const reason = document.getElementById('reason').value;
+    const startDate = document.getElementById('start').value;
+    const endDate = document.getElementById('end').value;
+
+    const start = `${startDate}T07:00:00`;
+    const end = `${endDate}T20:00:00`;
+
+    fetch('http://127.0.0.1:5000/api/add-event', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, reason, start, end })
+    })
+      .then(response => {
+        if (response.ok) {
+          alert('Event hinzugefügt!');
+          form.reset();
+          loadEvents(); // Liste neu laden
+        } else {
+          alert('Fehler beim Hinzufügen des Events.');
+        }
+      });
+  });
+
+
+  document.getElementById('deleteEventBtn').addEventListener('click', function () {
+    const id = document.querySelector('li[data-title="' + document.getElementById('title').value + '"]').dataset.id;
+
+    fetch('http://127.0.0.1:5000/api/delete-event', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    }).then(response => {
+      if (response.ok) {
+        alert('Event gelöscht!');
+        form.reset();
+        loadEvents();
+      } else {
+        alert('Fehler beim Löschen des Events.');
+      }
+    });
+  });
+});
+  </script>
+</body>
+</html>
