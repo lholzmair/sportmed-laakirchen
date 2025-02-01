@@ -38,9 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
             timestamp: new Date().getTime() // Cache umgehen
           };
         },
-        failure: function () {
+        /*failure: function () {
           alert('Fehler beim Laden der Events!');
-        },
+        },*/
         success: function (events) {
           // Dynamisch Farben zuweisen basierend auf dem Event-Titel
           events.forEach(event => {
