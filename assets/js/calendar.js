@@ -74,11 +74,26 @@ document.addEventListener('DOMContentLoaded', function () {
           },
           {
             title: 'Urlaub',
-            start: '2025-01-23T07:00:00',
-            end: '2025-01-23T20:00:00',
+            start: '2025-02-04T07:00:00',
+            end: '2025-02-04T20:00:00',
             allDay: false,
-            color: '#1A3E54'
+            color: '#6096BA'
+          },
+          {
+            title: 'Fortbildung',
+            start: '2025-02-05T07:00:00',
+            end: '2025-02-05T20:00:00',
+            allDay: false,
+            color: '#274C77'
+          },
+          {
+            title: 'Happy Birthday',
+            start: '2025-02-03T07:00:00',
+            end: '2025-02-03T20:00:00',
+            allDay: false,
+            color: '#6e6e6e'
           }
+
         ]
       }
     ],

@@ -1246,6 +1246,20 @@ h3 {
 }
 
 
+@media (max-width: 768px) {
+    .hero .welcome h2 {
+        font-size: 36px;
+        color:#ffffff;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  /* Textschatten für bessere Lesbarkeit */
+    }
+
+    .hero .welcome p {
+        font-size: 18px;
+        line-height: 1.4;
+        color:#ffffff;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);  /* Textschatten für bessere Lesbarkeit */
+    }
+}
 
 
 
