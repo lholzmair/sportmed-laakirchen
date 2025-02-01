@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sqlite3
 
+app = Flask(__name__, static_folder='assets')
+
 app = Flask(__name__)
 CORS(app)
 DATABASE = 'database.db'
