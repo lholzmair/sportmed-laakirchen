@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sqlite3
 
@@ -8,11 +8,19 @@ DATABASE = 'database.db'
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return send_from_directory('index.html')
 
 @app.route('/urlaub')
 def urlaub():
-        return render_template('urlaub.html')
+        return send_from_directory('urlaub.html')
+
+@app.route('/impressum')
+def impressum():
+    return send_from_directory('.', 'impressum.html')
+
+@app.route('/datenschutz')
+def datenschutz():
+    return send_from_directory('.', 'datenschutz.html')
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
